@@ -35,6 +35,9 @@ func (service *vehicleEventService) Save(vehicleEvent model.VehicleEvent) model.
 	}
 	fmt.Printf("The topic ID = %v\n", myTopicId)
 
+	now := time.Now()
+	vehicleEvent.CreatedAt = now
+
 	ma, err := json.Marshal(vehicleEvent)
 	if err != nil {
 		panic(err)

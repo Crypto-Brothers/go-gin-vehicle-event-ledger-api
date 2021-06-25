@@ -28,7 +28,7 @@ func NewServicer() VerifiedServicerService {
 func (service *verifiedServicerService) Save(verifiedServicer model.VerifiedServicer) model.VerifiedServicer {
 	var client = GetHederaClient()
 
-	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VEHICLE_SERVICER_TOPIC_ID"))
+	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VERIFIED_SERVICER_TOPIC_ID"))
 	if err != nil {
 		panic(err)
 	}
@@ -69,7 +69,7 @@ func (service *verifiedServicerService) Save(verifiedServicer model.VerifiedServ
 func (service *verifiedServicerService) FindAll() []model.VerifiedServicer {
 	var client = GetHederaClient()
 
-	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VEHICLE_SERVICER_TOPIC_ID"))
+	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VERIFIED_SERVICER_TOPIC_ID"))
 	if err != nil {
 		panic(err)
 	}
