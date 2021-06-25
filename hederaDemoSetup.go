@@ -37,6 +37,34 @@ func main() {
 	createTopic(client, "Public Vehicle Event Ledger")
 	createTopic(client, "Verified Vehicle Servicer Ledger")
 
+	//Create the transaction and freeze the unsigned transaction
+	tokenCreateTransaction, err := hedera.NewTokenCreateTransaction().
+		SetTokenName("MaintLog Bucks").
+		SetTokenSymbol("MLB").
+		SetTreasuryAccountID(myAccountId).
+		SetInitialSupply(10000).
+		SetAdminKey(myPrivateKey).
+		FreezeWith(client)
+	if err != nil {
+		panic(err)
+	}
+
+	// Sign with the admin private key of the token, sign with the token treasury private key,
+	//  sign with the client operator private key and submit the transaction to a Hedera network
+	txResponse, err := tokenCreateTransaction.Sign(myPrivateKey).Sign(myPrivateKey).Execute(client)
+	if err != nil {
+		panic(err)
+	}
+
+	//Request the receipt of the transaction
+	receipt, err := txResponse.GetReceipt(client)
+	if err != nil {
+		panic(err)
+	}
+
+	//Get the token ID from the receipt
+	tokenId := *receipt.TokenID
+	fmt.Printf("The new token ID is %v\n", tokenId)
 }
 
 func createTopic(client *hedera.Client, topicName string) {
