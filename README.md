@@ -59,7 +59,7 @@ Update server.go file to change the port, if desired.
 ## End Points
 
 
-# Vehicle Events
+### Vehicle Events
 These end points are used to read and write to the Hedera Topic that will record all maintenace/reapir events for each vehical.  FOr this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the owner of the NFT and other authorized parties to record maintenace/reapir events to the topic.  This is to ensure the validity of the party recording the maintenace/reapir events.
 
 GET /vehicleEvents - return all messages for the vehicle event topic
@@ -87,7 +87,7 @@ Expected JSON request format for POST
 
 The expected "selectedfile" is an uploaded image for the receipt or work summary.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
   
-# Vehical Servicers
+### Vehical Servicers
 The next end points are to manage a topic containing verified servicers.  These would be verified businesses that service cars.  The actual verification is assumed to be done off ledger, wherein that process would subsequently call the Hedera API to create a topic message for the servicer, thus making it available to this app.
 
 GET /verifiedServicer - return all messages for the verified servicer topic
