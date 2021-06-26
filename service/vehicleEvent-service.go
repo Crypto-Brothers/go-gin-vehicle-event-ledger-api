@@ -11,7 +11,7 @@ import (
 )
 
 type VehicleEventService interface {
-	Save(model.VehicleEvent) model.VehicleEvent
+	Tokenize(model.VehicleEvent) model.VehicleEvent
 	FindAll() []model.VehicleEvent
 	FindByVin(string) []model.VehicleEvent
 }
@@ -26,7 +26,7 @@ func NewEvent() VehicleEventService {
 	}
 }
 
-func (service *vehicleEventService) Save(vehicleEvent model.VehicleEvent) model.VehicleEvent {
+func (service *vehicleEventService) Tokenize(vehicleEvent model.VehicleEvent) model.VehicleEvent {
 	var client = GetHederaClient()
 
 	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VEHICLE_EVENT_TOPIC_ID"))
