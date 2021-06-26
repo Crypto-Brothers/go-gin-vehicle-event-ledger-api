@@ -58,9 +58,15 @@ Update server.go file to change the port, if desired.
 
 ## End Points
 
+### Vehicle Token
+These endpoints are related to the tokenization of a vehicle.
+
+GET /vehicleToken - return all asset NFT info for a vehicle
+POST /vehicleToken - create an asset NFT for a vehicle
+PUT /vehicleToken - transfer ownership of the fixed asset NFT for a vehicle
 
 ### Vehicle Events
-These end points are used to read and write to the Hedera Topic that will record all maintenace/reapir events for each vehical.  FOr this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the owner of the NFT and other authorized parties to record maintenace/reapir events to the topic.  This is to ensure the validity of the party recording the maintenace/reapir events.
+These end points are used to read and write to the Hedera Topic that will record all maintenace/repair events for each vehical.  For this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the owner of the NFT and other authorized parties to record maintenace/reapir events to the topic.  This is to ensure the validity of the party recording the maintenace/reapir events.
 
 GET /vehicleEvents - return all messages for the vehicle event topic
 
