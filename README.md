@@ -62,7 +62,9 @@ Update server.go file to change the port, if desired.
 These endpoints are related to the tokenization of a vehicle.
 
 GET /vehicleToken - return all asset NFT info for a vehicle
+
 POST /vehicleToken - create an asset NFT for a vehicle
+
 PUT /vehicleToken - transfer ownership of the fixed asset NFT for a vehicle
 
 ### Vehicle Events
