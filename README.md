@@ -97,8 +97,8 @@ Expected JSON request format for POST
 ```
 
 ## All event Types
+### Vehicles are assumed to be EV / Smart Vehicles
 ```
-Event Categories/Types
 Ownership Change
 	Initial Purchase
 	Transfer from Sale
@@ -109,8 +109,7 @@ Milage Milestone
 	50K
 	100K
 	150K
-	200K
-	250K
+    ...
 Maintenance/Servicing
 	Replace air filter
 	Scheduled maintenance
