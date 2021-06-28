@@ -65,7 +65,7 @@ GET /vehicleEvents/[ :vin ] - return messages for the vehicle event topic filter
 POST /vehicleEvents/ - save vehicle event to topic
 
 Expected JSON request format for POST
-'''
+```
     {
         "vin": "GA94234351",
         "eventcategory": "Vehicle Alerts",
@@ -73,7 +73,7 @@ Expected JSON request format for POST
         "description": "Joe Smith",
         "relatefileName": "receipt.jpg"
     }
-'''
+```
 
 The expected "relatefileName" is an uploaded image for an optional receipt or image to supply context.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
   
@@ -85,7 +85,7 @@ GET /verifiedServicer - return all messages for the verified servicer topic
 POST /verifiedServicer/ - save vehicle event to topic
 
 Expected JSON request format for POST
-'''
+```
  {
     "eventcategory": "Ownership Change",
     "eventtypes": [
@@ -94,6 +94,6 @@ Expected JSON request format for POST
  	    ["Repossesion"]
     ]
  }
-'''
+```
 ## The UI  
 The code for the UI used to interact with this REST API is in the [node-demo-ledger-ui repository](https://github.com/droatl2000/node-demo-ledger-ui)
