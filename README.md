@@ -1,6 +1,6 @@
 # go-demo-ledger-rest
 
-This sample app is a REST API that reads and writes messages to the Hedera distrubuted ledger.  It is written in Go and utilizes the [Hedera Go SDK](https://github.com/hashgraph/hedera-sdk-go). The function of this demo app is twofold, with the first function being to provide a programatic interface to create an asset NFT for vehicles, to establish clear ownership.  THe next fucntion is to log  maintenance/repairs events for those vehicles onto a publicly searchable, immutable ledger, in this case the Hedera network.  Owners could use it to prove that they performed regualar maintenance on their vehicle, which would be usefull for resale evalution purposes.  Orgazizations, like insurance companies and repair shops could, once authorized, also use it to record incidents like accident damage or regular maintenance activities.  Think of it as a decentralized [Carfax](https://www.carfax.com/vehicle-history-reports/).  The service providers that work on the vehicles are sourced from a Hedera topic that has first confirmed the validity of the provider.
+This sample app is a REST API that reads and writes messages to the Hedera distrubuted ledger.  It is written in Go and utilizes the [Hedera Go SDK](https://github.com/hashgraph/hedera-sdk-go). The function of this demo app is twofold, with the first function being to provide a programatic interface to create an asset NFT for vehicles, to establish clear ownership.  THe next fucntion is to log  events such as ownership changers, usage summaries, maintenance/repairs events, damage, vehicle alerts for those vehicles onto a publicly searchable, immutable ledger, in this case the Hedera network.  All events would be logged by the vehicles IOT sensors or in the case of an ownership change, the authorized local tag offie.  Owners could use it to prove that they performed regualar maintenance on their vehicle, which would be usefull for resale evalution purposes.  Orgazizations, like insurance companies, also use it to retreive incidents like accident damage or driving habits.  THe manufacturer would have access to  performance and durability data.  Think of it as a decentralized and more exhaustive [Carfax](https://www.carfax.com/vehicle-history-reports/).  
 
 ## Setup
 
@@ -14,17 +14,11 @@ Before starting the project, create an .env file in the project root directory. 
 
 > .env
 >
-> NFT_ISSUER_ACCOUNT_ID= (set account id)
+> ACCOUNT_ID= (set account id)
 >
-> NFT_ISSUER_PRIVATE_KEY= (set private key)
+> PRIVATE_KEY= (set private key)
 >
-> VEHICLE_OWNER_ACCOUNT_ID= (set account id)
->
-> VEHICLE_OWNER_PRIVATE_KEY= (set private key)
->
-> VEHICLE_EVENT_TOPIC_ID= (set later)
->
-> VERIFIED_SERVICER_TOPIC_ID= (set later)
+> EVENT_TYPE_TOPIC_ID= (set later)
 
 This project writes messages to a Hedera pub/sub topic, so you will need to create a topic by executing the following command from the project root directory.
 
@@ -35,17 +29,11 @@ Edit the .env again and set the TOPIC_IDs
 
 > .env
 >
-> NFT_ISSUER_ACCOUNT_ID= (set account id)
+> ACCOUNT_ID= (set account id)
 >
-> NFT_ISSUER_PRIVATE_KEY= (set private key)
+> PRIVATE_KEY= (set private key)
 >
-> VEHICLE_OWNER_ACCOUNT_ID= (set account id)
->
-> VEHICLE_OWNER_PRIVATE_KEY= (set private key)
->
-> VEHICLE_EVENT_TOPIC_ID= (set topic id)
->
-> VERIFIED_SERVICER_TOPIC_ID= (set topic id))
+> EVENT_TYPE_TOPIC_ID= (set topic id))
 
 Finally, execute the project.
 
@@ -63,12 +51,12 @@ These endpoints are related to the tokenization of a vehicle.
 
 GET /vehicleToken - return all asset NFT info for a vehicle
 
-POST /vehicleToken - create an asset NFT for a vehicle
+POST /vehicleToken - create an asset NFT & a vehicle ledger for a vehicle
 
 PUT /vehicleToken - transfer ownership of the fixed asset NFT for a vehicle
 
 ### Vehicle Events
-These end points are used to read and write to the Hedera Topic that will record all maintenace/repair events for each vehical.  For this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the owner of the NFT and other authorized parties to record maintenace/reapir events to the topic.  This is to ensure the validity of the party recording the maintenace/reapir events.
+These end points are used to read and write to the Hedera Topic that will record all life events for each vehicle.  For this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the vehicle account and authorized parties, such as tax offices, to record events to the topic.
 
 GET /vehicleEvents - return all messages for the vehicle event topic
 
@@ -77,64 +65,35 @@ GET /vehicleEvents/[ :vin ] - return messages for the vehicle event topic filter
 POST /vehicleEvents/ - save vehicle event to topic
 
 Expected JSON request format for POST
->
->      {
->
->        "vin": "GA94234351",
->  
->        "workdescription": "Oil Change & Tune Up",
->
->        "servicer": "Smith Auto Repair",
->
->        "technician": "Joe Smith",
->
->        "selectedfile": "receipt.jpg"
->
->      }
+'''
+    {
+        "vin": "GA94234351",
+        "eventcategory": "Vehicle Alerts",
+        "eventtype": "Air Bags Deployed",
+        "description": "Joe Smith",
+        "relatefileName": "receipt.jpg"
+    }
+'''
 
-
-The expected "selectedfile" is an uploaded image for the receipt or work summary.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
+The expected "relatefileName" is an uploaded image for an optional receipt or image to supply context.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
   
-### Vehical Servicers
-The next end points are to manage a topic containing verified servicers.  These would be verified businesses that service cars.  The actual verification is assumed to be done off ledger, wherein that process would subsequently call the Hedera API to create a topic message for the servicer, thus making it available to this app.
+### Event Type
+The next end points are to manage the event types.  
 
 GET /verifiedServicer - return all messages for the verified servicer topic
 
 POST /verifiedServicer/ - save vehicle event to topic
 
 Expected JSON request format for POST
->
-> {
->
->     "id": "1",
->
->     "name": "Jiffy Lube #241",
->
->     "streetaddress": "11 Oak Mill Rd.",
->
->     "city": "Mephis",
->
->     "postalcode": "54322",
->
->     "country": "USA",
->
->     "services": [
->
->         ["Oil Change", 20],
->         ["Brakes",120],
->         ["Trans Fluid Drain",75]
->
->     ],
->
->     "technicians": [
->
->         ["Alton Green", 1],
->         ["Raj Patel", 2],
->         ["Mary Cook", 3]
->
->     ]
->
-> }
-> 
+'''
+ {
+    "eventcategory": "Ownership Change",
+    "eventtypes": [
+        ["Initial Purchase"],
+   	    ["Transfer from Sale"],
+ 	    ["Repossesion"]
+    ]
+ }
+'''
 ## The UI  
 The code for the UI used to interact with this REST API is in the [node-demo-ledger-ui repository](https://github.com/droatl2000/node-demo-ledger-ui)
