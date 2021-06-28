@@ -6,35 +6,36 @@ import (
 	"os"
 	"time"
 
-	"github.com/droatl2000/demo-ledger-rest/model"
+	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/model"
 	"github.com/hashgraph/hedera-sdk-go/v2"
 )
 
-type VerifiedServicerService interface {
-	Save(model.VerifiedServicer) model.VerifiedServicer
-	FindAll() []model.VerifiedServicer
+type EventTypeService interface {
+	Save(model.EventType) model.EventType
+	FindAll() []model.EventType
 }
 
-type verifiedServicerService struct {
-	verifiedServicers []model.VerifiedServicer
+type eventTypeService struct {
+	eventTypes []model.EventType
 }
 
-func NewServicer() VerifiedServicerService {
-	return &verifiedServicerService{
-		verifiedServicers: []model.VerifiedServicer{},
+func NewType() EventTypeService {
+	return &eventTypeService{
+		eventTypes: []model.EventType{},
 	}
 }
 
-func (service *verifiedServicerService) Save(verifiedServicer model.VerifiedServicer) model.VerifiedServicer {
+func (service *eventTypeService) Save(eventType model.EventType) model.EventType {
+
 	var client = GetHederaClient()
 
-	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VERIFIED_SERVICER_TOPIC_ID"))
+	myTopicId, err := hedera.TopicIDFromString(os.Getenv("EVENT_TYPE_TOPIC_ID"))
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("The topic ID = %v\n", myTopicId)
 
-	ma, err := json.Marshal(verifiedServicer)
+	ma, err := json.Marshal(eventType)
 	if err != nil {
 		panic(err)
 	}
@@ -63,30 +64,30 @@ func (service *verifiedServicerService) Save(verifiedServicer model.VerifiedServ
 	fmt.Printf("The transaction consensus status is %v\n", transactionStatus)
 	//v2.0.0
 
-	return verifiedServicer
+	return eventType
 }
 
-func (service *verifiedServicerService) FindAll() []model.VerifiedServicer {
+func (service *eventTypeService) FindAll() []model.EventType {
 	var client = GetHederaClient()
 
-	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VERIFIED_SERVICER_TOPIC_ID"))
+	myTopicId, err := hedera.TopicIDFromString(os.Getenv("EVENT_TYPE_TOPIC_ID"))
 	if err != nil {
 		panic(err)
 	}
 	fmt.Printf("The topic ID = %v\n", myTopicId)
 
-	var results []model.VerifiedServicer
+	var results []model.EventType
 
 	sub, err := hedera.NewTopicMessageQuery().
 		SetTopicID(myTopicId).
 		SetStartTime(time.Unix(0, 0)).
 		Subscribe(client, func(message hedera.TopicMessage) {
-			var ma model.VerifiedServicer
+			var ma model.EventType
 			err := json.Unmarshal(message.Contents, &ma)
 			if err != nil {
 				println(err.Error(), ": error Unmarshalling")
 			}
-			fmt.Println(ma.Name, "-", ma.StreetAddress, "-", ma.Services, "-", ma.Technicians)
+			fmt.Println(ma.Category, "-", ma.Type)
 			results = append(results, ma)
 		})
 

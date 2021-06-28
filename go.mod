@@ -1,4 +1,4 @@
-module github.com/droatl2000/demo-ledger-rest
+module github.com/Crypto-Brothers/poc-vehicle-event-ledger-api
 
 go 1.16
 

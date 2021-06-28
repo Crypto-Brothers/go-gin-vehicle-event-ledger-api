@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"fmt"
@@ -8,11 +8,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func main() {
+func GetHederaClient() *hedera.Client {
 	//Loads the .env file and throws an error if it cannot load the variables from that file correctly
 	err := godotenv.Load(".env")
 	if err != nil {
-		panic(fmt.Errorf("Unable to load environment variables from .env file. Error:\n%v\n", err))
+		panic(fmt.Errorf("unable to load environment variables from .env file. error:%v", err))
 	}
 
 	//Grab your testnet account ID and private key from the .env file
@@ -28,60 +28,27 @@ func main() {
 
 	//Print your testnet account ID and private key to the console to make sure there was no error
 	fmt.Printf("The account ID is = %v\n", myAccountId)
-	fmt.Printf("The private key is = %v\n", myPrivateKey)
 
 	//Create your testnet client
 	client := hedera.ClientForTestnet()
 	client.SetOperator(myAccountId, myPrivateKey)
 
-	createTopic(client, "Public Vehicle Event Ledger")
-	createTopic(client, "Verified Vehicle Servicer Ledger")
-
-	//Create the transaction and freeze the unsigned transaction
-	tokenCreateTransaction, err := hedera.NewTokenCreateTransaction().
-		SetTokenName("MaintLog Bucks").
-		SetTokenSymbol("MLB").
-		SetTreasuryAccountID(myAccountId).
-		SetInitialSupply(10000).
-		SetAdminKey(myPrivateKey).
-		FreezeWith(client)
-	if err != nil {
-		panic(err)
-	}
-
-	// Sign with the admin private key of the token, sign with the token treasury private key,
-	//  sign with the client operator private key and submit the transaction to a Hedera network
-	txResponse, err := tokenCreateTransaction.Sign(myPrivateKey).Sign(myPrivateKey).Execute(client)
-	if err != nil {
-		panic(err)
-	}
-
-	//Request the receipt of the transaction
-	receipt, err := txResponse.GetReceipt(client)
-	if err != nil {
-		panic(err)
-	}
-
-	//Get the token ID from the receipt
-	tokenId := *receipt.TokenID
-	fmt.Printf("The new token ID is %v\n", tokenId)
+	return client
 }
 
-func createTopic(client *hedera.Client, topicName string) {
+func CreateTopic(client *hedera.Client, topicName string) hedera.TopicID {
 	//Create the transaction
 	transaction := hedera.NewTopicCreateTransaction()
 	transaction.SetTopicMemo(topicName)
 
 	//Sign with the client operator private key and submit the transaction to a Hedera network
 	txResponse, err := transaction.Execute(client)
-
 	if err != nil {
 		panic(err)
 	}
 
 	//Request the receipt of the transaction
 	transactionReceipt, err := txResponse.GetReceipt(client)
-
 	if err != nil {
 		panic(err)
 	}
@@ -90,4 +57,5 @@ func createTopic(client *hedera.Client, topicName string) {
 	newTopicID := *transactionReceipt.TopicID
 
 	fmt.Printf("%v topic ID is %v\n", topicName, newTopicID)
+	return newTopicID
 }

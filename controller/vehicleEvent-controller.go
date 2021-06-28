@@ -1,14 +1,15 @@
 package controller
 
 import (
-	"github.com/droatl2000/demo-ledger-rest/model"
-	"github.com/droatl2000/demo-ledger-rest/service"
+	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/model"
+	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/service"
 	"github.com/gin-gonic/gin"
+	"github.com/hashgraph/hedera-sdk-go/v2"
 )
 
 type VehicleEventController interface {
-	FindByVin(vin string) []model.VehicleEvent
-	FindAll() []model.VehicleEvent
+	FindByVin(ctx *gin.Context) []model.VehicleEvent
+	FindAll(ctx *gin.Context) []model.VehicleEvent
 	Save(ctx *gin.Context) model.VehicleEvent
 }
 
@@ -22,8 +23,13 @@ func NewEvent(service service.VehicleEventService) VehicleEventController {
 	}
 }
 
-func (c *vehicleEventController) FindAll() []model.VehicleEvent {
-	return c.service.FindAll()
+func (c *vehicleEventController) FindAll(ctx *gin.Context) []model.VehicleEvent {
+	topicid, terr := hedera.TopicIDFromString(ctx.Param("topicid"))
+	if terr != nil {
+		panic(terr)
+	}
+
+	return c.service.FindAll(topicid)
 }
 
 func (c *vehicleEventController) Save(ctx *gin.Context) model.VehicleEvent {
@@ -31,10 +37,22 @@ func (c *vehicleEventController) Save(ctx *gin.Context) model.VehicleEvent {
 
 	ctx.BindJSON(&vehicleEvent)
 
-	c.service.Save(vehicleEvent)
+	topicid, terr := hedera.TopicIDFromString(ctx.Param("topicid"))
+	if terr != nil {
+		panic(terr)
+	}
+
+	c.service.Save(topicid, vehicleEvent)
 	return vehicleEvent
 }
 
-func (c *vehicleEventController) FindByVin(vin string) []model.VehicleEvent {
-	return c.service.FindByVin(vin)
+func (c *vehicleEventController) FindByVin(ctx *gin.Context) []model.VehicleEvent {
+
+	topicid, terr := hedera.TopicIDFromString(ctx.Param("topicid"))
+	if terr != nil {
+		panic(terr)
+	}
+	vin := ctx.Param("vin")
+
+	return c.service.FindByVin(topicid, vin)
 }

@@ -28,7 +28,7 @@ Before starting the project, create an .env file in the project root directory. 
 
 This project writes messages to a Hedera pub/sub topic, so you will need to create a topic by executing the following command from the project root directory.
 
-> go run hederaTopicCreation.go
+> go run setup/hederaTopicCreation.go
 
 This will create a Hedera pub/sub topic and will return the Topic Ids for the application.
 Edit the .env again and set the TOPIC_IDs

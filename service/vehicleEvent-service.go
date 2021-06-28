@@ -6,12 +6,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/droatl2000/demo-ledger-rest/model"
+	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/model"
 	"github.com/hashgraph/hedera-sdk-go/v2"
 )
 
 type VehicleEventService interface {
-	Tokenize(model.VehicleEvent) model.VehicleEvent
+	Save(model.VehicleEvent) model.VehicleEvent
 	FindAll() []model.VehicleEvent
 	FindByVin(string) []model.VehicleEvent
 }
@@ -26,7 +26,7 @@ func NewEvent() VehicleEventService {
 	}
 }
 
-func (service *vehicleEventService) Tokenize(vehicleEvent model.VehicleEvent) model.VehicleEvent {
+func (service *vehicleEventService) Save(vehicleEvent model.VehicleEvent) model.VehicleEvent {
 	var client = GetHederaClient()
 
 	myTopicId, err := hedera.TopicIDFromString(os.Getenv("VEHICLE_EVENT_TOPIC_ID"))
@@ -90,7 +90,7 @@ func (service *vehicleEventService) FindByVin(searchVin string) []model.VehicleE
 			if err != nil {
 				println(err.Error(), ": error Unmarshalling")
 			}
-			fmt.Println(ma.Vin, "-", ma.Servicer, "-", ma.SelectedFileName, "-", ma.Technician)
+			fmt.Println(ma.Vin, "-", ma.EventCategory, "-", ma.EventType, "-", ma.CreatedAt)
 			if (ma.Vin == searchVin) || (searchVin == "") {
 				results = append(results, ma)
 			}
