@@ -6,7 +6,7 @@ This sample app is a REST API that reads and writes messages to the Hedera distr
 
 This sample app assumes you have already installed the GO distribution.  If not, you can find instructions [here](https://golang.org/doc/install)
 
-Adiitionally, you will need at least 2 Hedera Portal profiles. To create your Hedera Portal profile register [here](https://portal.hedera.com/register).  Once registered, you'll need to note your Account ID and your Private Key.  These credential will be used by the the app to access any Hedera network services uned in the demo.
+Adiitionally, you will need at least 2 Hedera Portal profiles. To create your Hedera Portal profile on the Testnet, register [here](https://portal.hedera.com/register).  Once registered, you'll need to note your Account ID and your Private Key.  These credential will be used by the the app to access any Hedera network services uned in the demo.
 
 Before starting the project, create an .env file in the project root directory.  This file will store environemtn variable, such as your Hedera Account ID, your Private Key, and Topic IDs used by the app.
 
