@@ -10,8 +10,6 @@ import (
 var (
 	vehicleEventService    service.VehicleEventService       = service.NewEvent()
 	vehicleEventController controller.VehicleEventController = controller.NewEvent(vehicleEventService)
-	eventTypeService       service.EventTypeService          = service.NewType()
-	eventTypeController    controller.EventTypeController    = controller.NewType(eventTypeService)
 	vehicleTokenService    service.VehicleTokenService       = service.NewVehicleToken()
 	vehicleTokenController controller.VehicleTokenController = controller.NewVehicleToken(vehicleTokenService)
 )
@@ -31,14 +29,6 @@ func main() {
 
 	router.POST("/vehicleEvents", func(ctx *gin.Context) {
 		ctx.JSON(200, vehicleEventController.Save(ctx))
-	})
-
-	router.GET("/eventTypes", func(ctx *gin.Context) {
-		ctx.JSON(200, eventTypeController.FindAll())
-	})
-
-	router.POST("/eventTypes", func(ctx *gin.Context) {
-		ctx.JSON(200, eventTypeController.Save(ctx))
 	})
 
 	router.POST("/vehicleToken", func(ctx *gin.Context) {
