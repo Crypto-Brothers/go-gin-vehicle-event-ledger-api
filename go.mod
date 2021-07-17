@@ -1,4 +1,4 @@
-module github.com/Crypto-Brothers/poc-vehicle-event-ledger-api
+module github.com/Crypto-Brothers/go-gin-vehicle-event-ledger-api
 
 go 1.16
 

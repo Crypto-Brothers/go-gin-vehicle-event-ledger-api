@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/model"
-	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/service"
+	"github.com/Crypto-Brothers/go-gin-vehicle-event-ledger-api/model"
+	"github.com/Crypto-Brothers/go-gin-vehicle-event-ledger-api/service"
 	"github.com/gin-gonic/gin"
 )
 

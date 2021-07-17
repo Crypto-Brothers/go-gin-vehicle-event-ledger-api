@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/Crypto-Brothers/poc-vehicle-event-ledger-api/model"
+	"github.com/Crypto-Brothers/go-gin-vehicle-event-ledger-api/model"
 	"github.com/hashgraph/hedera-sdk-go/v2"
 )
 
