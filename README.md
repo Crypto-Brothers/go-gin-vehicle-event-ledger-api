@@ -46,14 +46,6 @@ Update server.go file to change the port, if desired.
 
 ## End Points
 
-### Vehicle Token
-These endpoints are related to the tokenization of a vehicle.
-
-GET /vehicleToken - return all asset NFT info for a vehicle
-
-POST /vehicleToken - create an asset NFT & a vehicle ledger for a vehicle
-
-PUT /vehicleToken - transfer ownership of the fixed asset NFT for a vehicle
 
 ### Vehicle Events
 These end points are used to read and write to the Hedera Topic that will record all life events for each vehicle.  For this demo, a topic for a particular vehicle will be created once an asset NFT for the vehical has been created.  The app will only allow the vehicle account and authorized parties, such as tax offices, to record events to the topic.
@@ -70,75 +62,11 @@ Expected JSON request format for POST
         "vin": "GA94234351",
         "eventcategory": "Vehicle Alerts",
         "eventtype": "Air Bags Deployed",
-        "description": "Joe Smith",
-        "relatefileName": "receipt.jpg"
+        "description": "Front airbag deployed. 490,914 Newtons / 23mph"
     }
 ```
 
 The expected "relatefileName" is an uploaded image for an optional receipt or image to supply context.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
   
-### Event Type
-The next end points are to manage the event types.  
-
-GET /verifiedServicer - return all messages for the verified servicer topic
-
-POST /verifiedServicer/ - save vehicle event to topic
-
-Expected JSON request format for POST
-```
- {
-    "eventcategory": "Ownership Change",
-    "eventtypes": [
-        ["Initial Purchase"],
-        ["Transfer from Sale"],
-        ["Repossesion"]
-    ]
- }
-```
-
-## All event Types
-### Vehicles are assumed to be EV / Smart Vehicles
-```
-Ownership Change
-	Initial Purchase
-	Transfer from Sale
-	Repossesion
-Compliance
-	Emissions
-Milage Milestone
-	50K
-	100K
-	150K
-    ...
-Maintenance/Servicing
-	Replace air filter
-	Scheduled maintenance
-	Electrical work
-	New tires
-	Battery replacement
-	Brake work
-	Fluid added/replaced
-	Wheels aligned/balanced
-	Other
-Damage
-	Accident
-	Vandalism
-	Weather
-	Other
-Usage Summary
-	Self Driving Miles
-	Manual Driving Miles
-	Average Speed
-	Max Speed
-	Min Speed
-	Speed Violations
-	Lbs Towed
-Vehicle Alerts
-	Air Bags Deployed
-	Check Engine Alert
-	Battery Alert
-	Brake Alert
-	Other
-```
 ## The UI  
 The code for the UI used to interact with this REST API is in the [node-demo-ledger-ui repository](https://github.com/droatl2000/node-demo-ledger-ui)
