@@ -33,7 +33,7 @@ Edit the .env again and set the TOPIC_IDs
 >
 > PRIVATE_KEY= (set private key)
 >
-> game_EVENT_TOPIC_ID= (set topic id))
+> VEHICLE_EVENT_TOPIC_ID= (set topic id))
 
 Finally, execute the project.
 
@@ -47,20 +47,20 @@ Update server.go file to change the port, if desired.
 ## End Points
 
 
-### game Events
+### Vehicle Events
 These end points are used to read and write to the Hedera Topic that will record all life events for each game.  For this demo, a topic for a particular game will be created once an asset NFT for the vehical has been created.  The app will only allow the game account and authorized parties, such as tax offices, to record events to the topic.
 
-GET /gameEvents - return all messages for the game event topic
+GET /vehicleEvents - return all messages for the vehicle event topic
 
-GET /gameEvents/[ :vin ] - return messages for the game event topic filtered by VIN
+GET /vehicleEvents/[ :vin ] - return messages for the vehicle event topic filtered by VIN
 
-POST /gameEvents/ - save game event to topic
+POST /vehicleEvents/ - save vehicle event to topic
 
 Expected JSON request format for POST
 ```
     {
         "vin": "GA94234351",
-        "eventcategory": "game Alerts",
+        "eventcategory": "Vehicle Alerts",
         "eventtype": "Air Bags Deployed",
         "description": "Front airbag deployed. 490,914 Newtons / 23mph"
     }
