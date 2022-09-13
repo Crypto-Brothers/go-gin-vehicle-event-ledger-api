@@ -69,5 +69,5 @@ Expected JSON request format for POST
 The expected "relatefileName" is an uploaded image for an optional receipt or image to supply context.  Eventually, this project will be expanded with functionality to upload this file to a distrubuted storage layer, like [IPFS](https://ipfs.io/). 
   
 ## The UI  
-The code for the UI used to interact with this REST API is in the [d3-reactjs-vehicle-event-ledger-ui repository](https://github.com/CryptoNorm/d3-reactjs-vehicle-event-ledger-ui)
+The code for the UI used to interact with this REST API is in the [d3-reactjs-vehicle-event-ledger-ui repository](https://github.com/Crypto-Brothers/d3-reactjs-vehicle-event-ledger-ui)
 # go-demo-ledger-rest
